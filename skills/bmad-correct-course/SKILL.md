@@ -42,11 +42,11 @@ Treat every entry in `{workflow.persistent_facts}` as foundational context you c
 
 ### Step 4: Load Config
 
-Run: `uv run {project-root}/_bmad/scripts/resolve_config.py --project-root {project-root} --key core.project_name --key modules.bmm.implementation_artifacts --key modules.bmm.planning_artifacts`
+Run: `uv run {project-root}/_bmad/scripts/resolve_config.py --project-root {project-root} --key core.project_name --key modules.bmm.planning_artifacts`
 
 - `date` as system-generated current datetime
 - YOU MUST ALWAYS SPEAK OUTPUT in your Agent communication style
-- DOCUMENT OUTPUT: Updated epics, stories, or PRD sections. Clear, actionable changes.
+- DOCUMENT OUTPUT: A change proposal with suggested document edits and a ticketing handoff.
 
 ### Step 5: Greet the User
 
@@ -67,7 +67,7 @@ Activation is complete. If `activation_steps_prepend` or `activation_steps_appen
 | Input | Path | Load Strategy |
 |-------|------|---------------|
 | PRD | `{planning_artifacts}/*prd*.md` (whole) or `{planning_artifacts}/*prd*/*.md` (sharded) | FULL_LOAD |
-| Epics | `{planning_artifacts}/*epic*.md` (whole) or `{planning_artifacts}/*epic*/*.md` (sharded) | FULL_LOAD |
+| Affected work | User-described epics, stories, dependencies, and current state | User context |
 | Architecture | `{planning_artifacts}/*architecture*.md` (whole) or `{planning_artifacts}/*architecture*/*.md` (sharded) | FULL_LOAD |
 | UX Design | `{planning_artifacts}/*ux*.md` (whole) or `{planning_artifacts}/*ux*/*.md` (sharded) | FULL_LOAD |
 | Spec | `{planning_artifacts}/*spec-*.md` (whole) | FULL_LOAD |
@@ -79,10 +79,10 @@ Activation is complete. If `activation_steps_prepend` or `activation_steps_appen
 
 **Strategy**: Course correction needs broad project context to assess change impact accurately. Load all available planning artifacts.
 
-**Discovery Process for FULL_LOAD documents (PRD, Epics, Architecture, UX Design, Spec):**
+**Discovery Process for FULL_LOAD documents (PRD, Architecture, UX Design, Spec):**
 
-1. **Search for whole document first** - Look for files matching the whole-document pattern (e.g., `*prd*.md`, `*epic*.md`, `*architecture*.md`, `*ux*.md`, `*spec-*.md`)
-2. **Check for sharded version** - If whole document not found, look for a directory with `index.md` (e.g., `prd/index.md`, `epics/index.md`)
+1. **Search for whole document first** - Look for files matching the whole-document pattern (e.g., `*prd*.md`, `*architecture*.md`, `*ux*.md`, `*spec-*.md`)
+2. **Check for sharded version** - If whole document not found, look for a directory with `index.md` (e.g., `prd/index.md`)
 3. **If sharded version found**:
    - Read `index.md` to understand the document structure
    - Read ALL section files listed in the index
@@ -97,7 +97,7 @@ Activation is complete. If `activation_steps_prepend` or `activation_steps_appen
 
 **Fuzzy matching**: Be flexible with document names — users may use variations like `prd.md`, `bmm-prd.md`, `product-requirements.md`, etc.
 
-**Missing documents**: Not all documents may exist. PRD and Epics are essential; Architecture, UX Design, Spec, and Document Project are loaded if available. HALT if PRD or Epics cannot be found.
+**Missing documents**: A PRD is required; halt if it is unavailable. Load Architecture, UX Design, and Spec when available. Ask the user to describe affected work and gaps that prevent impact analysis. Do not discover or read the ticket tree; propose a handoff to `bmad-preview-ticketing` for approved changes.
 
 <workflow>
 
@@ -106,7 +106,7 @@ Activation is complete. If `activation_steps_prepend` or `activation_steps_appen
   <action>Ask: "What specific issue or change has been identified that requires navigation?"</action>
   <action>Verify access to project documents:</action>
     - PRD (Product Requirements Document) — required
-    - Current Epics and Stories — required
+    - User-described affected work and dependencies — required
     - Architecture documentation — optional, load if available
     - UI/UX specifications — optional, load if available
   <action>Ask user for mode preference:</action>
@@ -116,7 +116,7 @@ Activation is complete. If `activation_steps_prepend` or `activation_steps_appen
 
 <action if="change trigger is unclear">HALT: "Cannot navigate change without clear understanding of the triggering issue. Please provide specific details about what needs to change and why."</action>
 
-<action if="PRD or Epics are unavailable">HALT: "Need access to PRD and Epics to assess change impact. Please ensure these documents are accessible. Architecture and UI/UX will be used if available."</action>
+<action if="affected work is unclear">Ask the user to describe the work and dependencies affected before proposing changes.</action>
 </step>
 
 <step n="2" goal="Execute Change Analysis Checklist">

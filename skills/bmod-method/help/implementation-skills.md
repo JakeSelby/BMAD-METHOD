@@ -15,8 +15,8 @@ Read this when the question is about `bmad-build`, `bmad-build-auto`, or `bmad-c
 - Fits when: decisions and patterns are stable and the tickets are well specified.
 - Writes: the same plans as `bmad-build`.
 
-**`bmad-correct-course`** — assesses a significant midstream change on the epics route.
-- Gives: a change proposal covering impact across PRD, epics, architecture, and UX; a recommended path (adjust, roll back, or cut scope); and proposed edits. It drafts the edits to the PRD, epics, architecture, and UX and does not apply them: the user applies those through the owning skills. After approval it updates `sprint-status.yaml` itself for added, removed, or renumbered epics and stories.
+**`bmad-correct-course`** — assesses a significant midstream change using user-described affected work.
+- Gives: a change proposal covering impact across PRD, epics, architecture, and UX; a recommended path (adjust, roll back, or cut scope); and proposed edits. It drafts the edits to the PRD, epics, architecture, and UX and does not apply them: the user applies those through the owning skills. After approval it proposes a handoff to `bmad-preview-ticketing`; it does not read or edit the tree.
 - Pick when: a story exposes something that reaches across artifacts, such as a technical limit, a new or misread requirement, a pivot, or a failed approach.
-- Not when: there is no PRD or no epics (it halts). On the spec route → update the spec with `bmad-spec`. On the ticketing route → re-slice in `bmad-preview-ticketing`.
+- Not when: there is no PRD (it halts). Update a standalone spec with `bmad-spec`; revise an approved ticket breakdown with `bmad-preview-ticketing`.
 - Writes: `{planning_artifacts}/sprint-change-proposal-{date}.md`.

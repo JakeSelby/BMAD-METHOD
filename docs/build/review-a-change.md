@@ -17,7 +17,7 @@ By the time it finishes, a round of review and fixing has already
 happened.
 
 If you still suspect there is more to find, run `bmad-build` again and
-hand it the spec from that run — the one already marked `status: done`.
+hand it that run's plan at `built` or `in-review`.
 That skips straight to review and triage, and you can repeat it as many
 times as you want. Stop when the findings are mostly low-value notes
 about exotic corner cases. That is accidental complexity, not quality.
@@ -34,9 +34,7 @@ namespace, someone else's branch. See
 
 ## Run `bmad-code-review`
 
-Start a fresh chat and name the skill. Pass the change to review: a PR,
-commit, branch, file, or the current git state. You can describe the
-target before, with, or after the command.
+Start a fresh chat and name the skill. Pass a plan, PR, commit, branch, file, or the current git state. If neither the request nor recent conversation identifies a target, it offers tickets in the active tree's review column and waits for your choice. A ticket's plan supplies intent and `baseline_revision`; an absent historical baseline is reported before you choose another diff source. A `done` plan is valid historical review input; handing it back to Build does not reopen it.
 
 If you have a spec, requirements, or even a stream of consciousness
 for what this change is supposed to implement, feed that in too. Review
@@ -75,8 +73,7 @@ is not this change. Decision needed is an ambiguous choice that requires
 you. Without a spec, decision needed is not used — those findings go to
 patch or defer.
 
-You get a findings summary. Without a spec, that listing stays in the
-chat. You choose whether to apply patches.
+You get a findings summary and choose whether to apply patches. For a ticket, findings and deferred items go into a dated block under `## Code Review` in its joined plan. Without a plan, the listing stays in chat. Code review never changes ticket status.
 
 ## Customize the Lenses
 

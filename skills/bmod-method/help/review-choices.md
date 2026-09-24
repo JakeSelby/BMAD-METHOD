@@ -12,7 +12,7 @@ Use this when the user asks how much review to run, how to get another pass, whe
 
 ## Another pass, and when to stop
 
-- After `bmad-build`: run `bmad-code-review` with the story file. Handing `bmad-build` its `built` plan runs another review; a `done` plan does not.
+- After `bmad-build`: run `bmad-code-review` with the ticket or its plan. Handing `bmad-build` its `built` plan runs another review; a `done` plan does not.
 - After `bmad-build-auto`: dispatch its `built` plan again.
 - Worth it when review was skipped or `quick`, after material fixes, or when an unattended run set `followup_review_recommended`. After a `thorough` build review it only repeats the same lenses.
 - Stop when findings are mostly minor notes about unlikely corner cases.
@@ -25,7 +25,7 @@ Use this when the user asks how much review to run, how to get another pass, whe
 - Defaults to `thorough`; "quick" uses one reviewer. Above about 3000 diff lines it offers to review in file groups.
 - Triage checks every finding against the code and rejects disproved ones, plus low ones whose fix would add complexity.
 - Survivors become patch (a clear fix), defer (pre-existing or unverified), or decision needed (only when a spec was given).
-- The user chooses: apply all patches, walk through each, or leave them as action items in the story file.
+- The user chooses: apply all patches, walk through each, or leave them as deferred findings in the plan's dated `Code Review` block.
 
 ## Why review is slow
 
